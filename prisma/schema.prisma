@@ -1,0 +1,121 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id                          Int                       @id @default(autoincrement())
+  nom                         String
+  email                       String
+  password                    String
+  phone                       String
+  CIN                         String                          
+  statu_user_role             Statu_user_role[]
+  user_image                  UserImage[]
+  qrImageUser                 QrImageUser[]
+  ReservationValidate         ReservationValidate[]
+}
+
+
+model Role {
+  id                          Int                       @id @default(autoincrement())
+  nom                         String
+  statu_user_role             Statu_user_role[]
+}
+
+model Statu {
+  id                          Int                       @id @default(autoincrement())
+  libelle                     String
+  role                        Statu_user_role[]
+  train                       Train[]
+}
+
+model Statu_user_role {
+  id                          Int                       @id @default(autoincrement())
+  userId                      Int
+  roleId                      Int                 
+  statuId                     Int                 
+  date                        DateTime                  @default(now())
+  Role                        Role                      @relation(fields: [roleId], references: [id])
+  Statu                       Statu                     @relation(fields: [statuId], references: [id])
+  user                        User                      @relation(fields: [userId], references: [id])
+}
+
+
+model Image {
+  id                          Int                       @id @default(autoincrement())
+  nom                         String
+  user_image                  UserImage[]
+  qrImageUser                 QrImageUser[]
+
+}
+
+model UserImage {
+  id                          Int                       @id @default(autoincrement())
+  userId                      Int
+  imageId                     Int
+  date                        DateTime                  @default(now())
+  image                       Image                     @relation(fields: [imageId], references: [id])
+  user                        User                      @relation(fields: [userId], references: [id])
+}
+
+model Train {
+  id                          Int                       @id @default(autoincrement())
+  nom                         String
+  matricule                   String
+  idStatu                     Int
+  statu                       Statu                     @relation(fields: [idStatu], references: [id])
+  reservationValidate         ReservationValidate[]
+}
+
+model Gare{
+  id                          Int                       @id @default(autoincrement())
+  nom                         String
+
+}
+
+model Reservation {
+  id                          Int                       @id @default(autoincrement())
+  start                       Int            
+  end                         Int
+  numP                        Int
+  date                        DateTime
+  hour                        DateTime
+  reservationValidate         ReservationValidate[]
+}
+
+model QRcode {
+  id                          Int                       @id @default(autoincrement())
+  qrImageUser                 QrImageUser[]
+}
+
+model QrImageUser {
+  id                          Int                       @id @default(autoincrement())
+  qrId                        Int
+  imageId                     Int
+  userId                      Int
+  image                       Image                     @relation(fields: [imageId], references: [id])
+  user                        User                      @relation(fields: [userId], references: [id])
+  qrcode                      QRcode                    @relation(fields: [qrId], references: [id])
+}
+
+model ReservationValidate{
+  id                          Int                       @id @default(autoincrement())
+  userId                      Int          
+  reservationId               Int
+  trainId                     Int
+  user                        User                      @relation(fields: [userId], references: [id])
+  reservation                 Reservation               @relation(fields: [reservationId], references: [id])
+  train                       Train                     @relation(fields: [trainId], references: [id])
+ 
+}
+
+
