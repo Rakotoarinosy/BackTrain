@@ -3,6 +3,8 @@ const bcrypt = require('bcrypt');
 const router = require('express').Router();
 
 const user_C = require('../controllers/user')
+const multer = require('multer')
+
 const { PrismaClient } = require('@prisma/client')
 
 
@@ -18,6 +20,7 @@ const fileStorageEngine = multer.diskStorage({
       const fileName = Date.now() + "--" + file.originalname;
       
       try {
+        console.log("===================================================")
         // Code pour enregistrer le nom de fichier dans la base de données avec Prisma
         await prisma.image.create({
           data: {
@@ -50,12 +53,10 @@ router.use( (req, res, next) => {
 
 router.get('/', user_C.getAllUsers)
 
-router.get('/userAdmin', user_C.getUserAdmin)
-
 router.get('/:id', user_C.getUser)
 
-router.put('/register', upload.single('image'), user_C.addUser)
-
+//router.put('/register', upload.single('image'), user_C.addUser)
+router.put('/register', upload.single('image'),user_C.addUser);
 
 
 
