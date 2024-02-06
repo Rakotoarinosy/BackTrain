@@ -9,7 +9,6 @@ const io = require('socket.io')(8081, {
   }
 });
 
-const checkTokenMiddleware = require('./jsonwebtoken/check')
 
 
 const app = express();
@@ -31,7 +30,7 @@ app.get('/', async (req, res, next) => {
   res.send({ message: 'Awesome it works 🐻' });
 });
 
-app.use('/user',/*checkTokenMiddleware,*/ userRouter);
+app.use('/user', userRouter);
 app.use('/auth', authRouter);
 
 

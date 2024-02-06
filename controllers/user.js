@@ -90,7 +90,7 @@ exports.addUser = async (req, res, next) => {
 
   try {
 
-    
+    console.log(req.body)
     // Validation des données reçues
     if (!req.body.nom|| !req.body.email || !req.body.password ||!req.body.phone ||!req.body.cin ) {
       throw new RequestError('Missing parameter')
@@ -112,7 +112,7 @@ exports.addUser = async (req, res, next) => {
       nom: req.body.nom,
       email:req.body.email,
       phone:req.body.phone,
-      cin:req.body.CIN,
+      CIN:req.body.cin,
       password:hashPassword
     }
   
