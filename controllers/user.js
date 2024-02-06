@@ -92,7 +92,7 @@ exports.addUser = async (req, res, next) => {
 
     
     // Validation des données reçues
-    if (!req.body.nom|| !req.body.email || !req.body.password) {
+    if (!req.body.nom|| !req.body.email || !req.body.password ||!req.body.phone ||!req.body.cin ) {
       throw new RequestError('Missing parameter')
     }
   
@@ -111,6 +111,8 @@ exports.addUser = async (req, res, next) => {
   const dataNewUser={
       nom: req.body.nom,
       email:req.body.email,
+      phone:req.body.phone,
+      cin:req.body.CIN,
       password:hashPassword
     }
   
@@ -135,13 +137,37 @@ exports.addUser = async (req, res, next) => {
   //Ajouter Role
   const newUserRole = {
       userId: lastId,
-      roleId: 2,
+      roleId: req.body.roleId,
       statuId: 1
   }
 
   const newRole = await prisma.statu_user_role.create({
     data: newUserRole,
   })
+
+
+    
+  if(req.body.nomImage !== undefined){
+    //Prendre l'id de l'image ajouter
+    const image = await prisma.image.findFirst({
+      select: {
+        id: true,
+      },
+      orderBy: {
+        id: 'desc',
+      },
+    });
+
+    const imageId = image?.id || 0; // Si la table est vide, retourne 0 comme dernière ID
+    //Ajouter image
+    await prisma.userImage.create({
+      data:{
+        userId: lastId,
+        imageId: imageId
+      }
+    })
+}
+
 
       res.json(newUserRole)
       
