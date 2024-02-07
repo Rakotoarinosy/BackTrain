@@ -4,6 +4,15 @@ const { PrismaClient } = require('@prisma/client')
 
 
 const prisma = new PrismaClient()
+const { UserError, RequestError } = require('../error/customError')
+
+const dateFormat= (date) =>{
+    const formattedDate = currentDate.getFullYear() + "-" + (currentDate.getMonth() +  1) + "-" + currentDate.getDate();
+    const formattedTime = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
+    const dateTime = formattedDate + " " + formattedTime; 
+    return dateTime
+  
+  }
 
 
 
@@ -46,3 +55,53 @@ exports.getAllTrain = async (req, res, next) => {
   };
 
 
+
+  exports.addTrainGare = async (req, res, next) => {
+
+    try {
+    const currentDate = new Date();
+
+  
+    const newTrainGare = {
+        trainId: parseInt(req.body.trainId),
+        gareId:  parseInt(req.body.gareId),
+        date: currentDate
+      }
+      //Ajouter la notification
+  
+      const trainGare = await prisma.trainGare.create({
+        data: newTrainGare,
+      })
+      
+      res.json(trainGare)
+      
+    } catch (error) {
+      next(error)
+    }  
+  
+  };
+
+
+  
+exports.getTrainGare = async (req, res, next) => {
+
+    try{   
+        const gareId = parseInt(req.params.id)
+
+        // Vérification si le champ id est présent et cohérent
+        if (!gareId) {
+          throw new RequestError('Missing parameter')
+        }
+
+      const trainGares = await prisma.trainGare.findMany({
+        include:{ train:true, gare:true},
+        where: {
+          gareId: gareId,
+        },
+      });
+     
+      res.json({trainGares})
+    } catch (error) {
+      next(error)
+    }
+  };
