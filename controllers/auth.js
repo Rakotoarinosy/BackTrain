@@ -40,11 +40,14 @@ exports.login = async (req, res, next) => {
     }
     })
 
+
+
     // Comparer le mot de passe
       const match = await bcrypt.compare(req.body.password, user[0].password);
       if(!match) {
         throw new AuthenticationError('Mot de passe invalide', 2)
       }
+      
 
 
     // Génération du token et envoi
@@ -54,6 +57,7 @@ exports.login = async (req, res, next) => {
             email: user[0].email
         }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_DURING})
         
+        console.log("tonga ato")
 
         //recuperation du role de l'utilisateur
 

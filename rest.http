@@ -1,0 +1,175 @@
+
+// USER //
+
+GET  http://localhost:5000/user/deleteUser/30
+
+###
+PATCH  http://localhost:5000/user/deleteUser/30
+
+POST http://localhost:5000/user/userRole
+Content-Type: application/json
+
+{
+    "type": "randria4",
+    "token": "randriafds@gmail.com",
+} 
+
+###
+PUT  http://localhost:5000/user/register
+Content-Type: application/json
+
+{
+    "nom": "newUser",
+    "email": "newUser@gmail.com",
+    "password": "newUser"
+} 
+
+###
+PATCH  http://localhost:5000/user/edit/1
+Content-Type: application/json
+
+{
+    "nom": "randria4",
+    "email": "randriafds@gmail.com",
+    "password": "1234567"
+} 
+
+
+###
+POST http://localhost:5000/auth/login
+Content-Type: application/json
+
+{
+    "email": "rabe@gmail.com",
+    "password": "123456"
+} 
+
+
+// TICKET //
+
+
+
+###
+GET http://localhost:5000/ticket
+
+
+// update statu ticket
+###
+GET http://localhost:5000/statu/cloturer/2
+
+
+###
+PUT http://localhost:5000/ticket/add
+Content-Type: application/json
+
+{
+    "titre": "testa",
+    "contenu": "Ticket en resolu",
+    "userId": 3
+} 
+
+
+###
+DELETE http://localhost:5000/ticket/300
+
+
+###
+PATCH  http://localhost:5000/ticket/1
+Content-Type: application/json
+
+{
+    "type": "NewNewTicket",
+    "contenu": "Nouveau ticket modifie",
+    "userId": 2
+} 
+
+
+
+
+//Conversation
+
+###
+PUT  http://localhost:5000/conversation/new
+Content-Type: application/json
+
+{
+    "user": 3,
+    "admin": 1,
+    "ticketId": 2
+} 
+
+###
+GET http://localhost:5000/conversation/1
+
+
+// SATUS
+###
+GET http://localhost:5000/statu/supprimer/180
+
+
+
+// Message
+###
+PUT  http://localhost:5000/message/new
+Content-Type: application/json
+
+{
+    "senderId": 22,
+    "message": "nouveau message du client",
+    "conversationId": 14
+} 
+
+###
+GET http://localhost:5000/message/13
+
+
+// notification
+###
+PUT  http://localhost:5000/notification/new
+Content-Type: application/json
+
+{
+    "userId": 3,
+    "contenu": "test notification"
+} 
+
+###
+GET http://localhost:5000/notification/1
+
+
+###
+GET http://localhost:5000/notification/NonLu/3
+
+###
+PATCH  http://localhost:5000/notification/setLu/3
+
+
+//dashboard
+###
+GET http://localhost:5000/dashboard/statAll
+
+###
+GET http://localhost:5000/dashboard/statLast
+
+###
+GET http://localhost:5000/dashboard/statUser
+
+###
+GET http://localhost:5000/dashboard/statCurrent
+
+
+
+///SOlution
+
+###
+PUT http://localhost:5000/solution/add
+Content-Type: application/json
+
+{
+    "contenu": " reactualiser la page",
+    "ticketId": 4
+} 
+
+
+###
+GET http://localhost:5000/ticket
