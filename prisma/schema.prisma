@@ -74,12 +74,14 @@ model Train {
   idStatu                     Int
   statu                       Statu                     @relation(fields: [idStatu], references: [id])
   reservationValidate         ReservationValidate[]
+  trainGare                   TrainGare[]
+
 }
 
 model Gare{
   id                          Int                       @id @default(autoincrement())
   nom                         String
-
+  trainGare                   TrainGare[]
 }
 
 model Reservation {
@@ -90,6 +92,7 @@ model Reservation {
   date                        DateTime
   hour                        DateTime
   reservationValidate         ReservationValidate[]
+  reservationTraveler         ReservationTraveler[]
 }
 
 model QRcode {
@@ -115,7 +118,31 @@ model ReservationValidate{
   user                        User                      @relation(fields: [userId], references: [id])
   reservation                 Reservation               @relation(fields: [reservationId], references: [id])
   train                       Train                     @relation(fields: [trainId], references: [id])
- 
+
 }
 
 
+model TrainGare {
+  id                          Int                       @id @default(autoincrement())
+  trainId                     Int
+  gareId                      Int
+  date                        DateTime
+  train                       Train                     @relation(fields: [trainId],references: [id])
+  gare                        Gare                      @relation(fields: [gareId], references: [id])
+}
+
+model Traveler {
+  id                          Int                       @id @default(autoincrement())
+  nom                         String
+  cin                         String
+  reservationTraveler         ReservationTraveler[]
+}
+
+model ReservationTraveler {
+  id                          Int                       @id @default(autoincrement())
+  reservationId               Int
+  travelerId                  Int
+  reservation                 Reservation               @relation(fields: [reservationId], references: [id])
+  traveler                    Traveler                  @relation(fields: [travelerId], references: [id])
+
+}
