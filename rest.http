@@ -1,5 +1,128 @@
 
-// USER //
+// ATAO ANATY .ENV //
+//JWT_SECRET = dkfjhqskldfjnqsldfjkhsqkdfqs
+//JWT_DURING = 1 hour
+
+// """""""""""""""""""""""""""""""" LOGIN """"""""""""""""""""""""""""""""" //
+###
+POST http://localhost:5000/auth/login
+Content-Type: application/json
+
+{
+    "email": "fehizoro@gmail.com",
+    "password": "fehizoro"
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 GET  http://localhost:5000/user/deleteUser/30
 
@@ -40,8 +163,8 @@ POST http://localhost:5000/auth/login
 Content-Type: application/json
 
 {
-    "email": "rabe@gmail.com",
-    "password": "123456"
+    "email": "fehizoro@gmail.com",
+    "password": "fehizoro"
 } 
 
 
