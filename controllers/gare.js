@@ -1,11 +1,5 @@
-const jwt = require('jsonwebtoken')
 
-const bcrypt = require('bcrypt');
 const { PrismaClient } = require('@prisma/client')
-
-const { UserError, RequestError } = require('../error/customError')
-
-
 
 const prisma = new PrismaClient()
 
@@ -39,9 +33,9 @@ exports.getAllGare = async (req, res, next) => {
 
     try{   
 
-      const users = await prisma.gare.findMany()
+      const gares = await prisma.gare.findMany()
      
-      res.json({users})
+      res.json({gares})
     } catch (error) {
       next(error)
     }
