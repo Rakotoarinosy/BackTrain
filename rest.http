@@ -1,4 +1,5 @@
 
+
 // ATAO ANATY .ENV //
 //JWT_SECRET = dkfjhqskldfjnqsldfjkhsqkdfqs
 //JWT_DURING = 1 hour
@@ -12,6 +13,8 @@ Content-Type: application/json
     "email": "fehizoro@gmail.com",
     "password": "fehizoro"
 } 
+
+
 
 
 
