@@ -172,6 +172,33 @@ Content-Type: application/json
 } 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ###
 GET http://localhost:5000/ticket
 
@@ -193,3 +220,45 @@ Content-Type: application/json
 ###
 GET  http://localhost:5000/gare/allGare
 
+
+
+
+
+
+
+// ===========================================================
+
+// TRAIN
+
+// ===========================================================
+
+###
+PUT  http://localhost:5000/train/addTrain
+Content-Type: application/json
+
+{
+    "nom": "Train01",
+    "matricule": "001"
+} 
+
+
+###
+GET  http://localhost:5000/train/allTrain
+
+
+###
+PUT  http://localhost:5000/train/addTrainGare
+Content-Type: application/json
+
+{
+    "trainId": 1,
+    "gareId": 1
+} 
+
+
+###
+GET   http://localhost:5000/train/getTrainGare/1
+
+
+###
+GET   http://localhost:5000/train/getTrainGare/2

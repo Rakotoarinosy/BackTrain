@@ -20,7 +20,6 @@ const fileStorageEngine = multer.diskStorage({
       const fileName = Date.now() + "--" + file.originalname;
       
       try {
-        console.log("===================================================")
         // Code pour enregistrer le nom de fichier dans la base de données avec Prisma
         await prisma.image.create({
           data: {

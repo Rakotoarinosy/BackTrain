@@ -22,6 +22,8 @@ app.use(cors())
 const userRouter=require('./routes/user');
 const authRouter=require('./routes/auth');
 const gareRouter=require('./routes/gare');
+const trainRouter=require('./routes/train');
+
 
 
 
@@ -34,7 +36,7 @@ app.get('/', async (req, res, next) => {
 app.use('/user', userRouter);
 app.use('/auth', authRouter);
 app.use('/gare', gareRouter);
-
+app.use('/train',trainRouter)
 
 
 
