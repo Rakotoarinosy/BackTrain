@@ -135,9 +135,10 @@ exports.addUser = async (req, res, next) => {
   const lastId = result?.id || 0; // Si la table est vide, retourne 0 comme dernière ID
 
   //Ajouter Role
+  const roleId = parseInt(req.body.roleId)
   const newUserRole = {
       userId: lastId,
-      roleId: req.body.roleId,
+      roleId: roleId,
       statuId: 1
   }
 
