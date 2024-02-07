@@ -1,130 +1,5 @@
 
 
-// ATAO ANATY .ENV //
-//JWT_SECRET = dkfjhqskldfjnqsldfjkhsqkdfqs
-//JWT_DURING = 1 hour
-
-// """""""""""""""""""""""""""""""" LOGIN """"""""""""""""""""""""""""""""" //
-###
-POST http://localhost:5000/auth/login
-Content-Type: application/json
-
-{
-    "email": "fehizoro@gmail.com",
-    "password": "fehizoro"
-} 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 GET  http://localhost:5000/user/deleteUser/30
@@ -299,3 +174,22 @@ Content-Type: application/json
 
 ###
 GET http://localhost:5000/ticket
+
+
+// ===========================================================
+
+// GARE
+
+// ===========================================================
+
+###
+PUT  http://localhost:5000/gare/addGare
+Content-Type: application/json
+
+{
+    "nom": "Soarano"
+} 
+
+###
+GET  http://localhost:5000/gare/allGare
+
