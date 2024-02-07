@@ -75,7 +75,7 @@ model Train {
   statu                       Statu                     @relation(fields: [idStatu], references: [id])
   reservationValidate         ReservationValidate[]
   trainGare                   TrainGare[]
-
+  trainReservation            TrainReservation[]
 }
 
 model Gare{
@@ -93,6 +93,7 @@ model Reservation {
   hour                        DateTime
   reservationValidate         ReservationValidate[]
   reservationTraveler         ReservationTraveler[]
+  trainReservation            TrainReservation[]
 }
 
 model QRcode {
@@ -144,5 +145,15 @@ model ReservationTraveler {
   travelerId                  Int
   reservation                 Reservation               @relation(fields: [reservationId], references: [id])
   traveler                    Traveler                  @relation(fields: [travelerId], references: [id])
+
+}
+
+
+model TrainReservation {
+  id                          Int                       @id @default(autoincrement())
+  reservationId               Int
+  trainId                     Int
+  reservation                 Reservation               @relation(fields: [reservationId], references: [id])
+  train                       Train                 @relation(fields: [trainId], references: [id])
 
 }
