@@ -1,4 +1,3 @@
-
 const { PrismaClient } = require('@prisma/client')
 
 const prisma = new PrismaClient()
@@ -28,10 +27,10 @@ exports.addGare = async (req, res, next) => {
 
 
 
-
 exports.getAllGare = async (req, res, next) => {
 
     try{   
+
 
       const gares = await prisma.gare.findMany()
      
