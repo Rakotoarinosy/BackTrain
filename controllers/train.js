@@ -92,8 +92,9 @@ exports.getTrainGare = async (req, res, next) => {
         if (!gareId) {
           throw new RequestError('Missing parameter')
         }
-
+      
         console.log(gareId)
+
       const trainGares = await prisma.trainGare.findMany({
         include:{ train:true, gare:true},
         where: {
