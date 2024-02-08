@@ -24,8 +24,7 @@ const authRouter=require('./routes/auth');
 const gareRouter=require('./routes/gare');
 const trainRouter=require('./routes/train');
 const controlleurRouter=require('./routes/controlleur');
-
-
+const reservationRouter=require('./routes/reservation');
 
 
 
@@ -39,7 +38,7 @@ app.use('/auth', authRouter);
 app.use('/gare', gareRouter);
 app.use('/train', trainRouter);
 app.use('/controlleur', controlleurRouter);
-
+app.use('/reservation', reservationRouter);
 
 
 

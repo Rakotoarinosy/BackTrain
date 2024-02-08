@@ -89,8 +89,8 @@ model Reservation {
   start                       Int            
   end                         Int
   numP                        Int
-  date                        DateTime
-  hour                        DateTime
+  date                        DateTime                  @default(now())
+  hour                        DateTime                  @default(now())
   reservationValidate         ReservationValidate[]
   reservationTraveler         ReservationTraveler[]
   trainReservation            TrainReservation[]
@@ -127,7 +127,7 @@ model TrainGare {
   id                          Int                       @id @default(autoincrement())
   trainId                     Int
   gareId                      Int
-  date                        DateTime
+  date                        DateTime                  @default(now())
   train                       Train                     @relation(fields: [trainId],references: [id])
   gare                        Gare                      @relation(fields: [gareId], references: [id])
 }

@@ -270,3 +270,29 @@ POST http://localhost:5000/controlleur/reservationTrain
     "idTrain": 1,
     "idGare": 2
 }
+
+
+// ===========================================================
+
+// RESERVATION
+
+// ===========================================================
+
+###
+PUT  http://localhost:5000/reservation/addReservation
+Content-Type: application/json
+
+{
+    "userId": 1,
+    "start": 1,
+    "end": 2,
+    "numP":2,
+    "trainId":1,
+    "personne": [
+        {"nom":"Rakoto", "cin":"1234899"},
+        {"nom": "Rabe", "cin": "3523523"}
+    ]
+        
+    
+} 
+
