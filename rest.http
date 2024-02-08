@@ -262,3 +262,11 @@ GET   http://localhost:5000/train/getTrainGare/1
 
 ###
 GET   http://localhost:5000/train/getTrainGare/2
+
+###
+POST http://localhost:5000/controlleur/reservationTrain
+
+{
+    "idTrain": 1,
+    "idGare": 2
+}
