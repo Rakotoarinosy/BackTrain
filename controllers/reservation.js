@@ -1,6 +1,10 @@
 const { PrismaClient } = require('@prisma/client')
+const jwt = require('jsonwebtoken')
+
+const bcrypt = require('bcrypt');
 
 const prisma = new PrismaClient()
+
 
 
 
@@ -8,7 +12,8 @@ exports.addReservation = async (req, res, next) => {
 
   try {
 
-    console.log("fdsf")
+    userId = await getIdByToken(req.body.token)
+    console.log(userId)
 
     const newReservation= {
       start: parseInt(req.body.start),          
@@ -37,7 +42,7 @@ exports.addReservation = async (req, res, next) => {
 
 
     const newReservationValidate = {
-      userId:  parseInt(req.body.userId),
+      userId:  parseInt(userId),
       reservationId: reservationId,
       trainId:  parseInt(req.body.trainId)
     }
@@ -103,3 +108,27 @@ exports.getAllReservation = async (req, res, next) => {
   };
 
 
+const getIdByToken = async (token) => {
+
+  try {
+    const decodedToken = jwt.decode(token);
+    
+    console.log(decodedToken)
+    
+    if (!decodedToken) {
+
+    // Si le token est invalide ou non décodé, vous pouvez renvoyer une réponse appropriée.
+    return res.status(400).json({ error: 'Invalid token' });
+
+    }
+
+    return decodedToken.id
+    
+    
+  } catch (error) {
+    // En cas d'erreur lors du décodage du token, vous pouvez renvoyer une réponse d'erreur.
+    return { error: 'Internal server error' };
+  }
+
+}
+  
