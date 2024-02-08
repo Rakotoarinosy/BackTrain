@@ -3,6 +3,9 @@ const jwt = require('jsonwebtoken')
 
 const bcrypt = require('bcrypt');
 
+const QRCode = require('qrcode');
+
+
 const prisma = new PrismaClient()
 
 
@@ -10,10 +13,19 @@ const prisma = new PrismaClient()
 
 exports.addReservation = async (req, res, next) => {
 
-  try {
+  let start= await getNomGare(req.body.start);
+  let end = await  getNomGare(req.body.end);
+  let dataQr = {
+    nbPersonne: req.body.numP,
+    personne: req.body.personne,
+    start : start,
+    end : end
+  }
 
+  try {
+    
     userId = await getIdByToken(req.body.token)
-    console.log(userId)
+    dataQr['user'] = await getNomUser(userId);
 
     const newReservation= {
       start: parseInt(req.body.start),          
@@ -78,13 +90,13 @@ exports.addReservation = async (req, res, next) => {
       })
 
       
-      console.log(rep)
 
 
     })
 
     
-    res.json(rep)
+
+    res.json(dataQr)
     
   } catch (error) {
     next(error)
@@ -132,3 +144,38 @@ const getIdByToken = async (token) => {
 
 }
   
+
+
+const getNomGare = async (idGare)  => {
+
+  try{   
+
+
+    const gare = await prisma.gare.findUnique({
+      where:{
+        id: idGare
+      }
+    })
+   
+    return gare.nom
+  } catch (error) {
+    return error  }
+};
+
+
+const getNomUser = async (idUser)  => {
+
+  try{   
+
+
+    const user = await prisma.user.findUnique({
+      where:{
+        id: idUser
+      }
+    })
+   
+    return user.nom
+  } catch (error) {
+    return error
+  }
+};

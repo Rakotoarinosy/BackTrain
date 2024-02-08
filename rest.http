@@ -291,8 +291,6 @@ Content-Type: application/json
     "personne": [
         {"nom":"Rakoto", "cin":"1234899"},
         {"nom": "Rabe", "cin": "3523523"}
-    ]
-        
-    
+    ]   
 } 
 
