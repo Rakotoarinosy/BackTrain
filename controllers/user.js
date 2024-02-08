@@ -37,7 +37,16 @@ exports.getAllUsers = async (req, res, next) => {
       })
 
       user.map((user) => {
-        
+
+        return users.push(
+          {
+            id: user.id,
+            nom: user.nom,
+            email: user.email,
+
+          }
+        )
+        /*
         let item ={
           id: user.id,
           nom: user.nom,
@@ -49,10 +58,10 @@ exports.getAllUsers = async (req, res, next) => {
 
         if(item.userRole !== 3 && item.statuUser !==3){
           users.push(item)
-        }
+        }*/
       })
         
-      res.json({users})
+      res.json(users)
     } catch (error) {
       next(error)
     }

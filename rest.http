@@ -270,28 +270,3 @@ POST http://localhost:5000/controlleur/reservationTrain
     "idTrain": 1,
     "idGare": 2
 }
-
-
-// ===========================================================
-
-// RESERVATION
-
-// ===========================================================
-
-###
-PUT  http://localhost:5000/reservation/addReservation
-Content-Type: application/json
-
-{
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Niwibm9tIjoiZmVoaXpvcm8iLCJlbWFpbCI6ImZlaGl6b3JvQGdtYWlsLmNvbSIsImlhdCI6MTcwNzM1ODI2MCwiZXhwIjoxNzA3MzYxODYwfQ.ZaWlyqdivm4dK9lwJiq9uDuWRgjX7Q6sDXxaaClHDAA",
-    "start": 1,
-    "end": 2,
-    "numP":2,
-    "trainId":1,
-    "personne": [
-        {"nom":"Rakoto", "cin":"1234899"},
-        {"nom": "Rabe", "cin": "3523523"}
-    ]   
-} 
-
-}
