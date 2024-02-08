@@ -14,9 +14,18 @@ exports.getTrainReservation = async (req, res, next) => {
         const trainReservations = await prisma.trainReservation.findMany({
             where: {
                 trainId: idTrain,
-                reservation: {
-                    end: idGare
-                }
+                OR: [
+                    {
+                        reservation: {
+                            start: idGare
+                        }
+                    },
+                    {
+                        reservation: {
+                            end: idGare
+                        }
+                    }
+                ]
             },
             include: {
                 reservation: true,
@@ -24,7 +33,38 @@ exports.getTrainReservation = async (req, res, next) => {
             },
         });
 
-        res.json(trainReservations);
+        // console.log(trainReservations)
+        rep = []
+        trainReservations.map((element) => {
+            rep.push({
+                start: element.reservation.start,
+                end: element.reservation.end,
+                nump: element.reservation.numP
+            })
+
+
+            repStart = 0
+            repEnd = 0
+
+            rep.map(element => {
+                if (element.start === idGare) {
+                    repStart = repStart + element.nump
+                } else if(element.end === idGare){
+                    console.log("================", element.end)
+                    repEnd = repEnd + element.nump
+                }else {
+                    console.log("aucun reservation ne correspant à ce train")
+                }
+                
+            })
+
+
+        })
+
+        res.json({
+            repStart,
+            repEnd
+        });
 
     } catch (error) {
         next(error);
