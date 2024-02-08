@@ -127,6 +127,7 @@ model TrainGare {
   id                          Int                       @id @default(autoincrement())
   trainId                     Int
   gareId                      Int
+  placeDispo                  Int                       @default(10)
   date                        DateTime                  @default(now())
   train                       Train                     @relation(fields: [trainId],references: [id])
   gare                        Gare                      @relation(fields: [gareId], references: [id])
@@ -154,6 +155,6 @@ model TrainReservation {
   reservationId               Int
   trainId                     Int
   reservation                 Reservation               @relation(fields: [reservationId], references: [id])
-  train                       Train                 @relation(fields: [trainId], references: [id])
+  train                       Train                     @relation(fields: [trainId], references: [id])
 
 }
