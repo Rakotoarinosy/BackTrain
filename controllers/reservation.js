@@ -15,6 +15,7 @@ exports.addReservation = async (req, res, next) => {
 
   let start= await getNomGare(req.body.start);
   let end = await  getNomGare(req.body.end);
+
   let dataQr = {
     nbPersonne: req.body.numP,
     personne: req.body.personne,
@@ -89,7 +90,12 @@ exports.addReservation = async (req, res, next) => {
         data: {"reservationId":reservationId,"travelerId":travelerId},
       })
 
-      
+      let stringdata = JSON.stringify(dataQr);
+      let filePath = `./images/imageQr/${userId}.png`;
+      QRCode.toFile(filePath, stringdata, { errorCorrectionLevel: 'H' }, function (err) {
+        if (err) throw err;
+        console.log('Le code QR a été sauvegardé !');
+    });
 
 
     })
@@ -125,7 +131,6 @@ const getIdByToken = async (token) => {
   try {
     const decodedToken = jwt.decode(token);
     
-    console.log(decodedToken)
     
     if (!decodedToken) {
 
