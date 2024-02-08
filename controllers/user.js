@@ -293,3 +293,42 @@ exports.getUserRole = async (req, res, next) => {
     return res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+exports.getUserIdByToken = async (req , res, next) => {
+
+  const token = req.body.token
+
+  try {
+    const decodedToken = jwt.decode(token);
+    
+    
+    if (!decodedToken) {
+
+    // Si le token est invalide ou non décodé, vous pouvez renvoyer une réponse appropriée.
+    return res.status(400).json({ error: 'Invalid token' });
+
+    }
+
+    const { id } = decodedToken;
+      
+      const userRole = await prisma.statu_user_role.findMany({
+        where: {
+          userId: Number(id),
+        },
+
+      })
+
+      if (userRole.length == 0) {
+        throw new UserError(`L\'utilisateur n\'existe pas`, 0)
+    
+      }
+
+      return res.json(userRole[0].id)
+    
+    
+  } catch (error) {
+    // En cas d'erreur lors du décodage du token, vous pouvez renvoyer une réponse d'erreur.
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+
+}
