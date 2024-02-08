@@ -10,13 +10,6 @@ exports.getTrainReservation = async (req, res, next) => {
         if (!idTrain || !idGare) {
             throw new Error('Missing parameter');
         }
-        const trainReservations = await prisma.trainReservation.findMany({
-            where: {
-                trainId: idTrain,
-                reservation: {
-                    end: idGare
-                }
-
         let trainReservations = [];
 
         trainReservations = await prisma.trainReservation.findMany({
@@ -41,7 +34,7 @@ exports.getTrainReservation = async (req, res, next) => {
             },
         });
 
-        res.json(trainReservations);
+        // res.json(trainReservations);
         // console.log(trainReservations)
         let rep = [];
 
@@ -61,7 +54,6 @@ exports.getTrainReservation = async (req, res, next) => {
             if (element.start === idGare) {
                 repStart = repStart + element.nump
             } else if(element.end === idGare){
-                console.log(element.end)
                 repEnd = repEnd + element.nump
             }else {
                 console.log("aucun reservation ne correspant à ce train")
