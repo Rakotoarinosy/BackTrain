@@ -57,6 +57,8 @@ router.get('/:id', user_C.getUser)
 //router.put('/register', upload.single('image'), user_C.addUser)
 router.put('/register', upload.single('image'),user_C.addUser);
 
+router.post('/getToken', user_C.getUserIdByToken);
+
 
 
 
