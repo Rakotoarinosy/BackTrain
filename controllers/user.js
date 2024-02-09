@@ -302,7 +302,7 @@ exports.getUserRole = async (req, res, next) => {
   }
 };
 
-exports.getUserIdByToken = async (req , res, next) => {
+exports.getUserByToken = async (req , res, next) => {
 
   const token = req.body.token
 
