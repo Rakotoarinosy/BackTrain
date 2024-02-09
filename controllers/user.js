@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt');
 const { PrismaClient } = require('@prisma/client')
 
-const { UserError, RequestError } = require('../error/customError')
+const { UserError, RequestError } = require('../error/customError');
 
 
 
@@ -319,19 +319,47 @@ exports.getUserIdByToken = async (req , res, next) => {
 
     const { id } = decodedToken;
       
-      const userRole = await prisma.statu_user_role.findMany({
+      const user = await prisma.user.findMany({
         where: {
-          userId: Number(id),
+          id: Number(id),
         },
+        include : {
+          user_image: true,
+          
+        }
 
       })
 
-      if (userRole.length == 0) {
+      if (user.length == 0) {
         throw new UserError(`L\'utilisateur n\'existe pas`, 0)
     
       }
 
-      return res.json(userRole[0].id)
+      let data = []
+      
+      await Promise.all(
+      user.map(async (element) =>
+      { 
+        let nomImage = await getImageNom(element.user_image[0].imageId)
+        if(nomImage) {
+
+          console.log(nomImage)
+          let db =  {
+            "id"  : element.id,
+            "nom" : element.nom,
+            "email"  : element.email,
+            "phone" : element.phone,
+            "CIN"  : element.CIN,
+            "user_image" : nomImage
+          }
+          data.push(db)
+          console.log(data)
+        }
+        
+      }))
+       
+
+      return res.json(data)
     
     
   } catch (error) {
@@ -339,4 +367,15 @@ exports.getUserIdByToken = async (req , res, next) => {
     return res.status(500).json({ error: 'Internal server error' });
   }
 
+}
+
+
+const getImageNom = async (idImage) => {
+  const image = await prisma.image.findUnique({
+    where: {
+      id: parseInt(idImage),
+    }
+    
+  })
+  return image.nom
 }
