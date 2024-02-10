@@ -6,7 +6,7 @@ const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 const { UserError, RequestError } = require('../error/customError')
 
-const dateFormat= (date) =>{
+const dateFormat = (date) =>{
     const formattedDate = currentDate.getFullYear() + "-" + (currentDate.getMonth() +  1) + "-" + currentDate.getDate();
     const formattedTime = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
     const dateTime = formattedDate + " " + formattedTime; 
@@ -46,7 +46,11 @@ exports.getAllTrain = async (req, res, next) => {
 
     try{   
 
-      const trains = await prisma.train.findMany()
+      const trains = await prisma.train.findMany({
+        orderBy:{
+          id: "asc"
+        }
+      })
      
       res.json({trains})
     } catch (error) {
@@ -98,6 +102,9 @@ exports.getTrainGare = async (req, res, next) => {
         where: {
           gareId: gareId,
         },
+        orderBy: {
+          id: "asc"
+        }
       });
      
       res.json({trainGares})

@@ -4,7 +4,8 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt');
 
 const QRCode = require('qrcode');
-
+const nodemailer = require('nodemailer');
+const path = require('path');
 
 const prisma = new PrismaClient()
 
@@ -26,7 +27,8 @@ exports.addReservation = async (req, res, next) => {
   try {
     
     userId = await getIdByToken(req.body.token)
-    dataQr['user'] = await getNomUser(userId);
+    const user = await getUser(userId)
+    dataQr['user'] = user.nom;
 
     const newReservation= {
       start: parseInt(req.body.start),          
@@ -60,7 +62,7 @@ exports.addReservation = async (req, res, next) => {
       trainId:  parseInt(req.body.trainId)
     }
 
-    const rep = await prisma.reservationValidate.create({
+    await prisma.reservationValidate.create({
       data: newReservationValidate,
     })
 
@@ -83,26 +85,30 @@ exports.addReservation = async (req, res, next) => {
     });
   
     const travelerId = result?.id || 0; // Si la table est vide, retourne 0 comme dernière ID
-  
-  
-  
-      const rep = await prisma.reservationTraveler.create({
-        data: {"reservationId":reservationId,"travelerId":travelerId},
-      })
 
-      let stringdata = JSON.stringify(dataQr);
-      let filePath = `./images/imageQr/${userId}.png`;
-      QRCode.toFile(filePath, stringdata, { errorCorrectionLevel: 'H' }, function (err) {
-        if (err) throw err;
-        console.log('Le code QR a été sauvegardé !');
-    });
-
+      
+    const rep = await prisma.reservationTraveler.create({
+      data: {"reservationId":reservationId,"travelerId":travelerId},
+    })
 
     })
 
-    
 
-    res.json(dataQr)
+    let stringdata = JSON.stringify(dataQr);
+    let imageName = `${reservationId}.png`;
+    let filePath = `./images/imageQr/${imageName}`;
+    QRCode.toFile(filePath, stringdata, { errorCorrectionLevel: 'H' }, function (err) {
+      if (err) throw err;
+      console.log('Le code QR a été sauvegardé !');
+  });
+
+  let filePathEmail = `../images/imageQr/${imageName}`;
+  let repEmail = sendEmail(user.email,imageName,filePathEmail)
+
+
+  updatePlaceTrain(req.body.start, req.body.end, req.body.date, req.body.numP)
+
+    res.json(repEmail)
     
   } catch (error) {
     next(error)
@@ -168,7 +174,7 @@ const getNomGare = async (idGare)  => {
 };
 
 
-const getNomUser = async (idUser)  => {
+const getUser = async (idUser)  => {
 
   try{   
 
@@ -179,8 +185,129 @@ const getNomUser = async (idUser)  => {
       }
     })
    
-    return user.nom
+    return user
   } catch (error) {
     return error
   }
 };
+
+
+
+const sendEmail = (email,imageName,pathName) => {
+
+  // Création du transporteur avec les informations de connexion au serveur SMTP
+  const transporter = nodemailer.createTransport({
+      service: 'gmail', // Utilisez le service de messagerie que vous préférez
+      auth: {
+          user: process.env.EMAIL,
+          pass: process.env.MDP_APP
+      }
+  });
+
+  // Paramètres de l'e-mail
+  const mailOptions = {
+      from: process.env.EMAIL,
+      to: email,
+      subject: 'code QR de reservation ',
+      text: 'Veuillez trouver le code QR joint à cet e-mail.',
+      html: '<b>Veuillez trouver le code QR joint à cet e-mail.</b>',
+      attachments: [
+          {
+              filename: imageName, // Nom du fichier que vous avez créé précédemment
+              path: path.join(__dirname, pathName) // Chemin absolu vers le fichier
+          }
+      ]
+  };
+
+  // Envoi de l'e-mail
+  transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+          console.log(error);
+      } else {
+          console.log('Email sent: ' + info.response);
+          return "votre Qr code a ete envoye par email"
+      }
+  });
+
+
+}
+
+
+
+const updatePlaceTrain = async (startId, endId, date, nb, trainId)  => {
+  var isReserve = false
+  const trainGare = await prisma.trainGare.findMany({
+    where:{
+      trainId: trainId
+    },
+    orderBy:{
+      id: 'asc'
+    }
+  })
+
+
+  await Promise.all(
+  trainGare.map (async (element) => {
+      console.log(endId + " = " + element.gareId )
+      if(element.gareId == endId){
+        isReserve = false
+      }
+   
+      if(element.gareId == startId && element.date.toISOString() == date){
+        isReserve = true
+      }
+
+      if(isReserve == true){
+        await updatePlace(element.id,element.trainId, element.gareId,element.date, nb)
+      }
+
+
+  }))
+  return trainGare
+}
+
+
+
+
+const updatePlace= async (idTrainGare,trainId, gareId, date, nb) => {
+  try {
+   const id = parseInt(idTrainGare)
+
+  //tester le id
+  if(!id) {
+      return res.status(400).json({msg:"missing parameters"});
+  }
+
+  
+  const trainGares = await prisma.trainGare.findUnique({
+    where:{
+      id: idTrainGare
+    }
+  })
+
+  
+  let placeDispo = trainGares.placeDispo - nb
+  let data = {
+    trainId: trainId,
+    gareId: gareId,
+    date: date,
+    placeDispo: placeDispo
+  }
+
+
+
+    const trainGare = await prisma.trainGare.update({
+      data: data,
+      where:{
+        id: Number(id)
+      }
+    })
+
+    return trainGare
+    
+  } catch (error) {
+    return error
+  } 
+};
+
+
